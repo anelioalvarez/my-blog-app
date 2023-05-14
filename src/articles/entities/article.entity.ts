@@ -22,4 +22,7 @@ export class ArticleEntity implements Article {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiPropertyOptional({ nullable: true })
+  userId: number | null;
 }

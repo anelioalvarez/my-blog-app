@@ -15,4 +15,16 @@ model Article {
   description String?
   body        String
   published   Boolean  @default(false)
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
+  name      String?
+  password  String
+  articles  Article[]
 }
