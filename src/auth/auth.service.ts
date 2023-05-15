@@ -6,6 +6,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthEntity } from './entities/auth.entity';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './types/jwt-payload.type';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password.');
     }
 
-    return { accessToken: this.jwtService.sign({ userId: user.id }) };
+    const payload: JwtPayload = { userId: user.id };
+    return { accessToken: this.jwtService.sign(payload) };
   }
 }
