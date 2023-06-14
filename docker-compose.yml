@@ -1,17 +1,37 @@
 version: '3.8'
 
 services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: production
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    environment:
+        # Overrides the DATABASE_URL variable in the .env file
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}?schema=public
+    depends_on:
+      - postgres
+    # Run a command against the development stage of the image
+    # command: npm run start:dev
+    ports:
+      - 3000:3000
 
   postgres:
     image: postgres:13.5
     restart: always
     environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - 5432:5432
 
 volumes:
   postgres:
