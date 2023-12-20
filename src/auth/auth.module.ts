@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './jwt.strategy';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { IJwtConfig } from 'src/config/jwt.config';
 
 @Module({
@@ -15,7 +15,6 @@ import { IJwtConfig } from 'src/config/jwt.config';
     PrismaModule,
     PassportModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const jwtConfig = configService.get<IJwtConfig>('jwt-config');
         return {
